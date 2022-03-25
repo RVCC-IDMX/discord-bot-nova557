@@ -21,3 +21,12 @@ client.on("messageCreate", (message) => {
 });
 
 client.login(process.env.TOKEN);
+
+client.on("messageCowsay", (message) => {
+  if (message.content === "cowsay") {
+    message.reply(`/
+    Hello from Tyepscript!'/
+    ${process.env.TOKEN}
+    `);
+  }
+});
