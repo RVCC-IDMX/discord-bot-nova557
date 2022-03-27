@@ -1,6 +1,7 @@
 import DiscordJs, { Intents, Message } from "discord.js";
 import dotenv from "dotenv";
 import * as cowsay from "cowsay";
+import { IOptions } from "cowsay";
 dotenv.config();
 console.log(process.env.TOKEN);
 const client = new DiscordJs.Client({
@@ -32,5 +33,15 @@ client.on("messageCreate", (message) => {
       .then(() => console.log(`Replied to message "${message.content}"`))
       .catch(console.error);
   }
+  let opts: IOptions = {
+    text: "Hello from Typescript!",
+    e: "^^",
+    T: "//",
+    f: "oo",
+    r: true,
+    y: true,
+  };
+  console.log(cowsay.say(opts));
 });
+
 client.login(process.env.TOKEN);
