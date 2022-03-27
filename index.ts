@@ -21,18 +21,10 @@ client.on("messageCreate", (message) => {
   }
   if (message.content === "cowsay") {
     message.react("😊").then(console.log).catch(console.error);
-    let output: string = cowsay.say({ text: "Hello from typescript!" });
-    message
-      .reply(
-        `
-    \`\`\`
-    ${output}
-    \`\`\`
-    `
-      )
-      .then(() => console.log(`Replied to message "${message.content}"`))
-      .catch(console.error);
+    const output = cowsay();
+    message.reply(output).then(console.log).catch(console.error);
   }
+
   let opts: IOptions = {
     text: "Hello from Typescript!",
     e: "^^",
