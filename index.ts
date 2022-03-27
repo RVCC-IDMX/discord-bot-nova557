@@ -1,4 +1,4 @@
-import DiscordJs, { Intents } from "discord.js";
+import DiscordJs, { Intents, Message } from "discord.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -16,7 +16,12 @@ client.on("messageCreate", (message) => {
   if (message.content === "ping") {
     message.reply({
       content: "pong",
-    });
+    }),
+      message.react("😊").then(console.log).catch(console.error);
+    message
+      .reply("This is a reply!")
+      .then(() => console.log(`Replied to message "${message.content}"`))
+      .catch(console.error);
   }
 });
 
