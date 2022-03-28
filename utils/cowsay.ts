@@ -23,3 +23,11 @@ let opts: IOptions = {
     r: true,
   };
   console.log(cowsay.say(opts));
+
+  const args = message.content
+    .toLowerCase()
+    .substring(PREFIX.length)
+    .slice()
+    .trim()
+    .split(/ /);
+ const command = args.shift()!;
