@@ -4,6 +4,15 @@ import * as cowsay from "cowsay";
 import { IOptions } from "cowsay";
 dotenv.config();
 console.log(process.env.TOKEN);
+const CHANNELS = process.env.CHANNELS || null;
+
+if (!CHANNELS) {
+  console.error("CHANNELS is not defined");
+  process.exit(1);
+}
+
+const channels = CHANNELS.split(",");
+console.table(channels);
 const client = new DiscordJs.Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
 });
@@ -51,6 +60,7 @@ client.on("messageCreate", (message) => {
     .trim()
     .split(/ /);
   const command = args.shift()!;
+  if (!channels.includes(message.channel.id)) return;
 });
 function multiply(a, b = 1) {
   return a * b;
