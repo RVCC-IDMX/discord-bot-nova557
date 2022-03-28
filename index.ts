@@ -44,6 +44,22 @@ client.on("messageCreate", (message) => {
     y: true,
   };
   console.log(cowsay.say(opts));
+  const args = message.content
+    .toLowerCase()
+    .substring(PREFIX.length)
+    .slice()
+    .trim()
+    .split(/ /);
+  const command = args.shift()!;
 });
+function multiply(a, b = 1) {
+  return a * b;
+}
+
+console.log(multiply(5, 2));
+// expected output: 10
+
+console.log(multiply(5));
+// expected output: 5
 
 client.login(process.env.TOKEN);
