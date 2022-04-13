@@ -1,16 +1,24 @@
+/* eslint-disable import/order */
+/* eslint-disable import/extensions */
 import {Client, Intents} from 'discord.js';
+import cowsay from './utils/cowsay';
 import dotenv from 'dotenv';
 
-import * as cowsay from 'cowsay';
+if (Number(process.version.slice(1).split('.')[0]) < 16) {
+  throw new Error('Update Node to 16.x or higher');
+}
 
 dotenv.config();
+const PREFIX = process.env.PREFIX || 'hn!';
+console.log(`prefix is ${PREFIX}`);
+const TOKEN = process.env.TOKEN || null;
+if (!TOKEN) {
+  console.error('TOKEN is not defined');
+  process.exit(1);
+}
 
 const client = new Client({
-  intents: [
-    Intents.FLAGS.GUILDS,
-    Intents.FLAGS.GUILD_MESSAGES,
-    Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
-  ],
+  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
 });
 
 client.on('ready', () => {
@@ -18,24 +26,58 @@ client.on('ready', () => {
 });
 
 client.on('messageCreate', (message) => {
-  if (message.content === 'ping') {
+  console.log(` message content is ${message.content}`);
+  console.log(message.content.startsWith(PREFIX));
+  if (message.content.startsWith(PREFIX) === false) return;
+
+  const validCommands = ['ping', 'cowsay'];
+
+  const args = message.content
+    .toLowerCase()
+    .substring(PREFIX.length)
+    .slice()
+    .trim()
+    .split(/ /);
+  const command = args.shift()!;
+  console.log(`command is ${command}`);
+
+  if (!validCommands.includes(command)) {
+    message.channel.send('Invalid command');
+    console.log(`Invalid command: ${command}`);
+    return;
+  }
+
+  if (command === 'ping') {
+    // react to message and include error handling
+    message
+      .react('😂')
+      .then(() => console.log(`Reacted to message "${message.content}"`))
+      .catch(console.error);
+
+    // reply to message and include error handling
     message.reply({
       content: 'pong',
-    });
+    })
+    .then(() => console.log(`Replied to message "${message.content}"`))
+    .catch(console.error);
   }
-  if (message.content === 'cowsay') {
-    let output: string = cowsay.say({ text: 'Hello from typescript!'});
+  if (command === 'cowsay') {
+    // react to message and include error handling
+    message
+    .react('😎')
+    .then(() => console.log(`Reacted to message "${message.content}"`))
+    .catch(console.error);
 
-    output = `
-    \`\`\`
-    ${output}
-    \`\`\`
-    `;
+    const output: string = cowsay();
 
-    message.reply({
+    // reply to message and include error handling
+    message
+      .reply({
       content: output,
-    });
+    })
+    .then(() => console.log(`Replied to message "${message.content}"`))
+    .catch(console.error);
   }
 });
 
-client.login(process.env.TOKEN);
+client.login(TOKEN);
