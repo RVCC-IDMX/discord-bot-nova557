@@ -1,75 +1,41 @@
-import DiscordJs, { Intents, Message } from "discord.js";
-import dotenv from "dotenv";
-import * as cowsay from "cowsay";
-import { IOptions } from "cowsay";
+import {Client, Intents} from 'discord.js';
+import dotenv from 'dotenv';
+
+import * as cowsay from 'cowsay';
+
 dotenv.config();
-console.log(process.env.TOKEN);
-const CHANNELS = process.env.CHANNELS || null;
 
-if (!CHANNELS) {
-  console.error("CHANNELS is not defined");
-  process.exit(1);
-}
+const client = new Client({
+  intents: [
+    Intents.FLAGS.GUILDS,
+    Intents.FLAGS.GUILD_MESSAGES,
+    Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
+  ],
+});
 
-const channels = CHANNELS.split(",");
-console.table(channels);
-const client = new DiscordJs.Client({
-  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+client.on('ready', () => {
+  console.log('The bot is ready');
 });
-client.on("ready", () => {
-  console.log("The bot is ready");
-});
-client.on("messageCreate", (message) => {
-  if (message.content === "ping") {
-    message
-      .reply({
-        content: "pong",
-      })
-      .then(() => console.log(`Replied to message "${message.content}"`))
-      .catch(console.error);
-  }
-  if (message.content === "cowsay") {
-    message.react("😊").then(console.log).catch(console.error);
-    let output: string = cowsay.say({
-      text: "Fall seven times and stand up eight. - author: Japanese Proverb!",
+
+client.on('messageCreate', (message) => {
+  if (message.content === 'ping') {
+    message.reply({
+      content: 'pong',
     });
-    message
-      .reply(
-        `
+  }
+  if (message.content === 'cowsay') {
+    let output: string = cowsay.say({ text: 'Hello from typescript!'});
+
+    output = `
     \`\`\`
     ${output}
     \`\`\`
-    `
-      )
-      .then(() => console.log(`Replied to message "${message.content}"`))
-      .catch(console.error);
+    `;
+
+    message.reply({
+      content: output,
+    });
   }
-  let opts: IOptions = {
-    text: "Fall seven times and stand up eight. - author: Japanese Proverb!",
-    e: "^^",
-    T: "//",
-    f: "oo",
-    r: true,
-    y: true,
-  };
-  console.log(cowsay.say(opts));
-  const args = message.content
-    .toLowerCase()
-    .substring(PREFIX.length)
-    .slice()
-    .trim()
-    .split(/ /);
-  const command = args.shift()!;
-  if (!channels.includes(message.channel.id)) return;
 });
-function multiply(a, b = 1) {
-  return a * b;
-}
-
-console.log(multiply(5, 2));
-// expected output: 10
-
-console.log(multiply(5));
-// expected output: 5
 
 client.login(process.env.TOKEN);
