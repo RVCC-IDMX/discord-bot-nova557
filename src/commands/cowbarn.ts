@@ -61,17 +61,17 @@ const exampleEmbed = new MessageEmbed()
 	.setTitle('Cowbarn')
 	.setURL('https://discord.com/channels/956214464825413722/956214464825413725')
 	.setDescription(output)
-  .setThumbnail('https://i.imgur.com/AfFp7pu.png')
+  .setThumbnail('https://raw.githubusercontent.com/RVCC-IDMX/discord-bot-nova557/main/images/alien.png')
 	.addFields(
-		{ name: 'Regular field title', value: 'Some value here' },
+		{ name: 'Cowsay', value: 'Image' },
 		{ name: '\u200B', value: '\u200B' },
-		{ name: 'Inline field title', value: 'Some value here', inline: true },
-		{ name: 'Inline field title', value: 'Some value here', inline: true },
+		{ name: 'Person?', value: 'Any Image', inline: true },
+		{ name: 'Place?', value: 'Any Image', inline: true },
 	)
-	.addField('Inline field title', 'Some value here', true)
-	.setImage('https://i.imgur.com/AfFp7pu.png')
+	.addField('Thing?', 'Any Image', true)
+	.setImage('https://raw.githubusercontent.com/RVCC-IDMX/discord-bot-nova557/main/images/barn.png')
 	.setTimestamp()
-	.setFooter({ text: 'Footer', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
+	.setFooter({ text: 'nova557', iconURL: 'https://raw.githubusercontent.com/RVCC-IDMX/discord-bot-nova557/main/images/alien.png' });
     console.log(MessageEmbed);
 _message.channel.send({ embeds: [exampleEmbed] });
 		}
