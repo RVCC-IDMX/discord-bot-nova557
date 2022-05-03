@@ -1,7 +1,9 @@
 import * as cowsay from 'cowsay';
 import { IOptions } from 'cowsay';
-import quotes from './quotes.json';
-import getRandomInt from './random';
+import quotes from '../utils/quotes.json';
+import getRandomInt from '../utils/random';
+import { Message } from 'discord.js'
+
 
 let cowNamesList: string[] = [];
 
@@ -9,16 +11,26 @@ function getCows(error: any, cowNames: any) {
   if (error) {
     console.log(error);
   } else if (cowNames) {
-    console.log(`Number of cows available: ${cowNames.length}`);
+    console.log(`Number of cows available are: ${cowNames.length}`);
     cowNamesList = cowNames;
   }
 }
 
 cowsay.list(getCows);
 
-export default function (file: string = 'random'): string {
-  const quoteObj = quotes[getRandomInt(0, quotes.length)];
 
+export default {
+  callback: (message: Message, ...args: string[]) => {
+    console.log(cowNamesList);
+    console.log(args)
+    let file = args[0]
+    if (!file) {
+      file = 'random'
+    };
+
+
+// export default function (file: string = 'random'): string {
+  const quoteObj = quotes[getRandomInt(0, quotes.length)];
 
 const opts: IOptions = {
   text: `${quoteObj.quote} - ${quoteObj.author}`,
@@ -48,5 +60,6 @@ ${output}
 if (output.length > 2000) {
   output = 'Sorry, the cow is sleeping. Please come again later';
 }
-return output;
+message.reply(output)
+  },
 }

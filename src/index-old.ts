@@ -1,7 +1,7 @@
 /* eslint-disable import/order */
 /* eslint-disable import/extensions */
 import {Client, Intents} from 'discord.js';
-import cowsay from './utils/cowsay';
+import cowsay from './commands/cowsay';
 import dotenv from 'dotenv';
 
 if (Number(process.version.slice(1).split('.')[0]) < 16) {
