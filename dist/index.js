@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const discord_js_1 = require("discord.js");
+const weather = require("weather.ts")
 const cowsay_1 = tslib_1.__importDefault(require("./utils/cowsay"));
 const dotenv_1 = tslib_1.__importDefault(require("dotenv"));
 if (Number(process.version.slice(1).split('.')[0]) < 16) {
@@ -63,6 +64,9 @@ client.on('messageCreate', (message) => {
         })
             .then(() => console.log(`Replied to message "${message.content}"`))
             .catch(console.error);
+    }
+    if (command === "weather") {
+        bot.commands.get("weather").execute(message, args, Discord, weather)
     }
 });
 client.login(TOKEN);
